@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import GenericInput from "./GenericInput"
-import { JobApplication } from "../interfaces/jobApplication"
+import { JobApplication,Position } from "../interfaces/jobApplication"
 import { FC } from "react"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -25,7 +25,7 @@ const ApplicationPage: FC = () => {
             degree: '',
             score: 0,
             fieldOfStudy: '',
-            position: '',
+            position: Position.INTERN,
             status: false,
             startDate: new Date()
         })
@@ -33,17 +33,17 @@ const ApplicationPage: FC = () => {
 
     const handleFormEdit = async (): Promise<void> => {
         const urlParams = new URLSearchParams(window.location.search);
-        let response = await axios.get(`http://localhost:3007/view/${urlParams.get('id')}`);
+        if(urlParams.get('id') === null) {
+            return ;
+        }
+        const response = await axios.get(`http://localhost:3007/view-application/${urlParams.get('id')}`);
         setFormData(response.data.data)
-        console.log(urlParams.get('id'))
         setId(urlParams.get('id'))
     }
 
     useEffect(() => {
         handleFormEdit();
     }, [])
-
-
 
     const handleFormFeilds = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setFormData((prev => ({ ...prev, [e.target.name]: e.target.value })))
@@ -52,8 +52,7 @@ const ApplicationPage: FC = () => {
     const handleFormSubmit = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
         e.preventDefault();
         if (formData.firstName === '' || formData.lastName === '' || formData.age === 0 || 
-            formData.email === '' ||
-            formData.position === ' ' || formData.score === 0 || formData.institution === '') 
+            formData.email === ''  || formData.score === 0 || formData.institution === '') 
             { toast("Enter requied feilds!"); return; }
 
         const emailExpression: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -65,14 +64,13 @@ const ApplicationPage: FC = () => {
         if (!phoneResult) { toast("Incorrect Phone!"); return; }
 
         if (id === null) {
-            const response = await axios.post('http://localhost:3007/write', formData);
+            const response = await axios.post('http://localhost:3007/create-application', formData);
             response.statusText === "OK" && navigate('/')
         }
         else {
-            const response = await axios.put(`http://localhost:3007/update-form/${id}`, formData);
+            const response = await axios.put(`http://localhost:3007/update-application/${id}`, formData);
             response.statusText === "OK" && navigate('/')
         }
-        
     }
 
     return (
@@ -157,12 +155,12 @@ const ApplicationPage: FC = () => {
                                 <div className=" flex flex-col ">
                                     <div className=" font-medium">what postion are you looking for?
                                         <sup >*</sup></div>
-                                    <select name="position" className=" py-2 gap-1 w-[90%] bg-[#f5f5f5] border-0 outline-none" onChange={handleFormFeilds}>
+                                    <select name="position" value={formData.position} className=" py-2 gap-1 w-[90%] bg-[#f5f5f5] border-0 outline-none" onChange={handleFormFeilds}>
                                     <option >Positions</option>
-                                        <option value="Frontend Developer">Frontend Developer</option>
-                                        <option value="Backend Developer">Backend Developer</option>
-                                        <option value="Intern">Intern</option>
-                                        <option value="QA">QA</option>
+                                        <option value={Position.FRONTEND_DEVELOPER}>Frontend Developer</option>
+                                        <option value={Position.BACKEND_DEVELOPER}>Backend Developer</option>
+                                        <option value={Position.INTERN}>Intern</option>
+                                        <option value={Position.QA}>QA</option>
                                     </select>
                                 </div>
                             </div>

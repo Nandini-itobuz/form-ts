@@ -24,7 +24,8 @@ const ApplicationStatus = () => {
 
   const handleSetFormData = async (): Promise<void> => {
     const urlParams = new URLSearchParams(window.location.search);
-    const response = await axios.get(`http://localhost:3007/view/${urlParams.get('id')}`);
+    console.log(urlParams.get('id'))
+    const response = await axios.get(`http://localhost:3007/view-application/${urlParams.get('id')}`);
     setFormData(response.data.data)
   }
 

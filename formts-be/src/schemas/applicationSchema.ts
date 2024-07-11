@@ -21,19 +21,3 @@ const jobApplicationSchema = new schema({
 
 export const JAModel = mongoose.model<JobApplication>('JobApplication', jobApplicationSchema);
 
-// {
-//     "firstName" : "qwer",
-//     "lastName" : "asdf",
-//     "age":23,
-//     "email":"ss@gmail.com",
-//     "phone":1234567890,
-//     "position" : "assasdc",
-//     "yearsOfExperience": 1,
-//     "status":true,
-//     "education": [{
-//           "institution": "kiit",
-//           "degree": "swdcdc",
-//           "fieldOfStudy": "it",
-//           "score" : 90
-//       }]
-//   }

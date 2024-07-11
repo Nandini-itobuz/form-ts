@@ -1,16 +1,17 @@
 export interface JobApplication {
-    firstName: string | null;
-    middleName?: string | null;
-    age: number | null;
-    lastName: string | null;
+    _id?: string;
+    firstName: string ;
+    middleName?: string ;
+    age: number ;
+    lastName: string;
     email: string;
-    phone: number | undefined;
-    position: string | null;
-    institution: string | null
-    degree: string | null;
-    fieldOfStudy?: string | null;
-    startDate?: Date | null;
-    score: number | null
-    yearsOfExperience: number | null;
-    status: boolean | null,
+    phone: string;
+    position: string ;
+    institution: string 
+    degree: string ;
+    fieldOfStudy?: string ;
+    startDate?: Date ;
+    score: number 
+    yearsOfExperience: number ;
+    status: boolean ,
 }

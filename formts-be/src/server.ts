@@ -1,8 +1,8 @@
-import express, { Express, Request, Response } from "express";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+import express, { Express} from "express";
+import { dbConnection } from "./config/dbConnection";
 import { applicationRoutes } from "./routes/applicationRoutes";
 import cors from 'cors'
+import dotenv from 'dotenv'
 
 const app: Express = express();
 app.use(cors())
@@ -11,9 +11,7 @@ dotenv.config();
 
 const port = process.env.PORT || 3006;
 
-mongoose.connect('mongodb+srv://nandini:Nandini2377@cluster0.gjoswhn.mongodb.net/').
-then(() => console.log('Connected to MongoDB'))
-.catch(err => console.log('Failed to connect to MongoDB:', err));
+dbConnection();
 
 app.use('/',applicationRoutes)
 
